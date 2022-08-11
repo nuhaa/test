@@ -153,10 +153,8 @@ function Home(props) {
 }
 export default Home;
 export async function getServerSideProps(context) {
-  // let res = await fetch("https://raw.githubusercontent.com/nuhaa/api-region/master/tester.json");
   let res = await fetch("http://localhost:8000/api/datas");
   let result = await res.json();
-  // result = Object.entries(result);
   return {
     props: {
     	result
