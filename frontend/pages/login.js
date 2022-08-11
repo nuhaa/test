@@ -4,59 +4,28 @@ axios.defaults.baseURL = 'http://localhost:8000';
 export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
     const [showMe, setShowMe] = useState(false);
     function toggle(){
         setShowMe(!showMe); 
     }   
-    const [message] = "sad";
     const submit = async (e) => {
         e.preventDefault();
-        // const credentials = { username, password };
-        // const user = await axios.post("/api/login", credentials);
-        axios.all([
-                axios.post('/api/login', {
-                    username: username,
-                    password: password,
-                }), 
-                axios.post('https://devel.bebasbayar.com/web/test_programmer.php', {
-                    username: username,
-                    password: password,
-                    headers: {
-                        'Content-Type': null
-                    }
-
-                },
-                )
-            ])
-            .then(
-                axios.spread((local) => {
-                    console.log('local', local)
-                }
-        ));
-        
-        // axios({
-        //         method: "post",
-        //         url: "/api/login",
-        //         data: credentials,
-        //         // headers: { "Content-Type": "multipart/form-data" },
-        //     }).then(function (response) {
-        //             console.log(response);
-        //     }).catch(function (response) {
-        //             setShowMe(showMe=true)
-        //             message = response.response.data.message;
-        //     });
-        // axios({
-        //     method: 'GET',
-        //     url: '/api/check-token-is-active',
-        //     headers: {
-        //         'authorization': 'Bearer YOUR_JWT_TOKEN_HERE'
-        //     }
-        // }).then(resp => {
-        //     console.log(resp.data);
-        // }).catch(err => {
-        //     // Handle Error Here
-        //     console.error(err);
-        // });
+        const credentials = { username, password };
+        axios({
+                method: "post",
+                url: "/api/login",
+                data: credentials,
+                // headers: { "Content-Type": "multipart/form-data" },
+            }).then(function (response) {
+                console.log(response);
+                localStorage.setItem('token', response.data.token)
+                window.location = "/";
+            }).catch(function (response) {
+                console.log(response);
+                setShowMe(showMe=true)
+                setMessage(response.data.message)
+            });
     };
     return (
         <div class="bg-white dark:bg-gray-900">
